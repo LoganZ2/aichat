@@ -14,7 +14,7 @@ function App() {
   ];
   const conversations = [
     {
-      label: 'conversation',
+      label: 'conversation 1',
       key: 'c1',
     },
     {
