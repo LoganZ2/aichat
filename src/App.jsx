@@ -1,13 +1,13 @@
-import { useState } from 'react'
-import { Button, Input, Layout, Menu, Space } from 'antd'
+import { useEffect, useState } from 'react'
+import { Button, Dropdown, Input, Layout, Menu, Select, Space } from 'antd'
 import { Content, Header } from 'antd/es/layout/layout';
 import Sider from 'antd/es/layout/Sider';
-import TextArea from 'antd/es/input/TextArea';
 import Conversation from './Conversation';
 
 function App() {
   const [currentAPI, setCurrentAPI] = useState('openai');
-  const [currentConversation, setCurrentConversation] = useState('c1')
+  const [currentConversation, setCurrentConversation] = useState();
+  const [conversations, setConversations] = useState();
   const items = [
     {
       label: 'ChatGPT',
@@ -18,20 +18,28 @@ function App() {
       key: 'deepseek',
     }
   ];
-  const conversations = [
-    {
-      label: 'conversation 1',
-      key: 'c1',
-    },
-    {
-      label: 'conversation 2',
-      key: 'c2',
-    },
-    {
-      label: 'conversation 3',
-      key: 'c3',
-    }
-  ];
+
+  useEffect(() => {
+    const fetchConversations = async () => {
+      try {
+        const response = await fetch("http://142.188.81.183:3000/chat/openai/conversations");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        let data = await response.json();
+        data = data.response;
+        data = data.map(item => ({
+          label: item.name,
+          key: item._id
+        }));
+        setConversations(data);
+      } catch (error) {
+        console.error('Error fetching conversations:', error);
+      }
+    };
+    fetchConversations();
+  }, []);
+
   const onAPIMenuClick = (e) => {
     console.log('click ', e);
     setCurrentAPI(e.key);
@@ -59,7 +67,16 @@ function App() {
         <Menu style={{ minWidth: "800px" }} onClick={onAPIMenuClick} selectedKeys={[currentAPI]} mode="horizontal" items={items} theme="dark" />
       </Header>
       <Layout>
-        <Sider>
+        <Sider style={{ backgroundColor: 'white' }}>
+          <Select
+            style={{ marginTop: '5px', marginBottom: '5px', width: '100%' }}
+            options={[
+              { value: 'gpt-4o', label: 'gpt-4o' },
+              { value: 'o1-mini', label: 'o1-mini' },
+              { value: 'o1-preview', label: 'o1-preview' },
+            ]}
+          />
+          <Button style={{ marginBottom: '5px', width: '100%' }} type='primary' >New Chat</Button>
           <Menu style={{ minHeight: "875px" }} onClick={onConversationsMenuClick} selectedKeys={[currentConversation]} mode="inline" items={conversations} />
         </Sider>
         <Layout>
