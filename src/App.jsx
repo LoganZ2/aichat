@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { Layout, Menu } from 'antd'
-import { Header } from 'antd/es/layout/layout';
+import { Button, Input, Layout, Menu, Space } from 'antd'
+import { Content, Header } from 'antd/es/layout/layout';
 import Sider from 'antd/es/layout/Sider';
+import TextArea from 'antd/es/input/TextArea';
 
 function App() {
   const [currentAPI, setCurrentAPI] = useState('openai');
@@ -10,6 +11,10 @@ function App() {
     {
       label: 'ChatGPT',
       key: 'openai',
+    },
+    {
+      label: 'deepseek',
+      key: 'deepseek',
     }
   ];
   const conversations = [
@@ -56,6 +61,26 @@ function App() {
         <Sider>
           <Menu style={{ minHeight: "1000px" }} onClick={onConversationsMenuClick} selectedKeys={[currentConversation]} mode="inline" items={conversations} />
         </Sider>
+        <Layout>
+          <Content>
+            <div style={{
+              padding: 24,
+              margin: 0,
+              background: 'white',
+              minHeight: '100%', 
+              display: 'flex',
+              flexDirection: 'column-reverse'
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center'
+              }}>
+                <TextArea autoSize={{ minRows: 1, maxRows: 5 }} style={{ fontSize: '20px' }}></TextArea>
+                <Button color="primary" variant="solid" style={{ fontSize: '20px', height: '40px', marginLeft: '20px' }}>Send</Button>
+              </div>
+            </div>
+          </Content>
+        </Layout>
       </Layout>
     </Layout>
   )
