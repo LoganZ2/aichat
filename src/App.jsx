@@ -7,7 +7,8 @@ import Conversation from './Conversation';
 function App() {
   const [currentAPI, setCurrentAPI] = useState('openai');
   const [currentConversation, setCurrentConversation] = useState();
-  const [conversations, setConversations] = useState();
+  const [conversations, setConversations] = useState([]);
+
   const items = [
     {
       label: 'ChatGPT',
@@ -31,20 +32,24 @@ function App() {
         key: item._id
       }));
       setConversations(data);
+      return data;
     } catch (error) {
       console.error('Error fetching conversations:', error);
     }
   };
   useEffect(() => {
-    fetchConversations();
+    const fetchData = async () => {
+      const i = await fetchConversations();
+      setCurrentConversation(i[0].key);
+    };
+  
+    fetchData();
   }, [currentAPI]);
 
   const onAPIMenuClick = (e) => {
-    console.log('click ', e);
     setCurrentAPI(e.key);
   };
   const onConversationsMenuClick = (e) => {
-    console.log('click ', e);
     setCurrentConversation(e.key);
   };
 

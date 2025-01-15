@@ -106,7 +106,7 @@ export default function Conversation(props) {
             setMessages((prevMessages) => [
                 ...prevMessages,
                 { role: 'user', content: input.trim() },
-                { role: 'assistant', content: <Spin style={{ paddingLeft: '5px' }}/> }
+                { role: 'assistant', content: <Spin style={{ paddingTop: '10px' }}/> }
             ]);
             setInput('');
 
@@ -117,7 +117,6 @@ export default function Conversation(props) {
 
             fetchResponse
                 .then((result) => {
-                    console.log('Result:', result);
                     setMessages(result);
                 })
                 .finally(() => {
@@ -126,6 +125,15 @@ export default function Conversation(props) {
                 });
         }
     };
+
+    function renderContent(content) {
+        if (typeof content === "string") {
+            return <ReactMarkdown>{content}</ReactMarkdown>
+        } else {
+            return <div>{content}</div>;
+        }
+    }
+
     return (
         <div 
             style={{
@@ -162,15 +170,7 @@ export default function Conversation(props) {
                         style={{ overflowWrap: 'break-word', marginBottom: '8px', wordBreak: 'break-all', }}
                     >
                         <b>{message.role}:</b>
-                        <ReactMarkdown
-                            components={{
-                                pre: ({ node, ...props }) => (
-                                    <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', overflowX: 'auto' }} {...props} />
-                                ),
-                            }}
-                        >
-                            {message.content}
-                        </ReactMarkdown>
+                        {renderContent(message.content)}
                     </div>
                 ))}
             </div>
