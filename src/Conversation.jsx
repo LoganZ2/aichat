@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Select, Button, Spin } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
+import ReactMarkdown from 'react-markdown';
 
 export default function Conversation(props) {
     const [messages, setMessages] = useState([]);
@@ -131,7 +132,7 @@ export default function Conversation(props) {
                 padding: 24,
                 margin: 0,
                 background: 'white',
-                minHeight: '100%',
+                height: '100%',
                 display: 'flex',
                 flexDirection: 'column'
             }}
@@ -144,21 +145,32 @@ export default function Conversation(props) {
             />
             <div 
                 style={{
-                flex: 1,
+                maxWidth: '100%',
+                minHeight: '500px',
+                overflowWrap: 'break-word',
                 overflowY: 'auto',
                 marginBottom: '20px',
                 border: '1px solid #d9d9d9',
                 borderRadius: '8px',
                 padding: '16px',
-                backgroundColor: '#f5f5f5',
+                backgroundColor: 'white',
                 }}
             >
                 {messages.map((message, index) => (
                     <div 
                         key={index} 
-                        style={{ marginBottom: '8px', overflowWrap: 'break-word' }}
+                        style={{ overflowWrap: 'break-word', marginBottom: '8px', wordBreak: 'break-all', }}
                     >
-                        <b>{message.role}:</b> {message.content}
+                        <b>{message.role}:</b>
+                        <ReactMarkdown
+                            components={{
+                                pre: ({ node, ...props }) => (
+                                    <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', overflowX: 'auto' }} {...props} />
+                                ),
+                            }}
+                        >
+                            {message.content}
+                        </ReactMarkdown>
                     </div>
                 ))}
             </div>

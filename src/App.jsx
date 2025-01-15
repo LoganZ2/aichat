@@ -71,8 +71,10 @@ function App() {
           <Menu style={{ minHeight: "875px" }} onClick={onConversationsMenuClick} selectedKeys={[currentConversation]} mode="inline" items={conversations} />
         </Sider>
         <Layout>
-          <Content>
-            <Conversation id={currentConversation} refresh={fetchConversations} api={currentAPI}/>
+          <Content style={{ backgroundColor: 'white' }}>
+            <div style={{ height: '800px', backgroundColor: 'white' }}>
+              <Conversation id={currentConversation} refresh={fetchConversations} api={currentAPI}/>
+            </div>
           </Content>
         </Layout>
       </Layout>
