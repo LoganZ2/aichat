@@ -53,6 +53,22 @@ function App() {
     setCurrentConversation(e.key);
   };
 
+  const newChat = () => {
+    if (conversations.find(e=>e.key==='newChat')) {
+      setCurrentConversation('newChat');
+      return;
+    }
+    let nc = [
+      ...conversations,
+      {
+        label: 'New chat',
+        key: 'newChat'
+      }
+    ]
+    setConversations(nc);
+    setCurrentConversation('newChat');
+  }
+
   return (
     <Layout>
       <Header
@@ -72,13 +88,13 @@ function App() {
       </Header>
       <Layout>
         <Sider style={{ backgroundColor: 'white' }}>
-          <Button style={{ marginTop: '5px', marginBottom: '5px', width: '100%' }} type='primary' >New Chat</Button>
+          <Button onClick={newChat} style={{ marginTop: '5px', marginBottom: '5px', width: '100%' }} type='primary' >New Chat</Button>
           <Menu style={{ minHeight: "875px" }} onClick={onConversationsMenuClick} selectedKeys={[currentConversation]} mode="inline" items={conversations} />
         </Sider>
         <Layout>
           <Content style={{ backgroundColor: 'white' }}>
             <div style={{ height: '800px', backgroundColor: 'white' }}>
-              <Conversation id={currentConversation} refresh={fetchConversations} api={currentAPI}/>
+              <Conversation setId={setCurrentConversation} setAPI={setCurrentAPI} id={currentConversation} refresh={fetchConversations} api={currentAPI}/>
             </div>
           </Content>
         </Layout>

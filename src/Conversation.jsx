@@ -12,9 +12,13 @@ export default function Conversation(props) {
     useEffect(() => {
         const fetchMessages = async () => {
             if (props.id) {
-                const messages = await getConversation();
-                if (Array.isArray(messages)) {
-                    setMessages(messages);
+                if (props.id === 'newChat') {
+                    setMessages([]);
+                } else {
+                    const messages = await getConversation();
+                    if (Array.isArray(messages)) {
+                        setMessages(messages);
+                    }
                 }
             }
         };
@@ -32,7 +36,6 @@ export default function Conversation(props) {
     }
 
     const createConversation = async (message) => {
-        console.log(currentModel);
         try {
             const response = await fetch("http://142.188.81.183:3000/chat/" + props.api + "/conversations/create", {
                 method: 'POST',
@@ -51,6 +54,7 @@ export default function Conversation(props) {
     
             let data = await response.json();
             data = data.response;
+            promptFinished(data.model, data._id);
             return data.messages;
 
         } catch (error) {
@@ -92,6 +96,7 @@ export default function Conversation(props) {
     
             let data = await response.json();
             data = data.response;
+            promptFinished(data.model, data._id);
             setCurrentModel(data.model);
             return data.messages;
         } catch (error) {
@@ -125,6 +130,21 @@ export default function Conversation(props) {
                 });
         }
     };
+
+    const promptFinished = (model, id) => {
+
+        const findKeyForValue = (v) => {
+            for (const [key, values] of Object.entries(models)) {
+                if (values.some(item => item.value === v)) {
+                    return key;
+                }
+            }
+            return null;
+        };
+        const api = findKeyForValue(model)
+        props.setAPI(api);
+        props.setId(id);
+    }
 
     function renderContent(content) {
         if (typeof content === "string") {
