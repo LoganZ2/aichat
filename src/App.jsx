@@ -69,6 +69,22 @@ function App() {
     setCurrentConversation('newChat');
   }
 
+  const deleteChat = async () => {
+    if (currentConversation === 'newChat') {
+      let c = [...conversations];
+      c.splice(c.indexOf({
+        label: 'New chat',
+        key: 'newChat'
+      }));
+    } else {
+      await fetch("http://142.188.81.183:3000/chat/" + currentAPI + "/conversations/" + currentConversation, {
+        method: 'DELETE',
+      });
+    }
+    const i = await fetchConversations();
+    setCurrentConversation(i[0].key);
+  }
+
   return (
     <Layout>
       <Header
@@ -88,7 +104,8 @@ function App() {
       </Header>
       <Layout>
         <Sider style={{ backgroundColor: 'white' }}>
-          <Button onClick={newChat} style={{ marginTop: '5px', marginBottom: '5px', width: '100%' }} type='primary' >New Chat</Button>
+          <Button onClick={newChat} style={{ marginTop: '5px', marginBottom: '5px', marginRight: '5%', width: '50%' }} type='primary' >New Chat</Button>
+          <Button onClick={deleteChat} style={{ marginTop: '5px', marginBottom: '5px', width: '45%' }} color='danger' variant='solid' >Delete Chat</Button>
           <Menu style={{ minHeight: "875px" }} onClick={onConversationsMenuClick} selectedKeys={[currentConversation]} mode="inline" items={conversations} />
         </Sider>
         <Layout>
