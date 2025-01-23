@@ -43,7 +43,7 @@ export default function Conversation(props) {
 
     const createConversation = async (message) => {
         try {
-            const response = await fetch("http://142.188.81.183:3000/chat/" + props.api + "/conversations/create", {
+            const response = await fetch("https://loganz2.win/aichat/chat/" + props.api + "/conversations/create", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -70,7 +70,7 @@ export default function Conversation(props) {
 
     const getResponse = async (message) => {
         try {
-            const response = await fetch("http://142.188.81.183:3000/chat/" + props.api + "/conversations/response", {
+            const response = await fetch("https://loganz2.win/aichat/chat/" + props.api + "/conversations/response", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -94,7 +94,7 @@ export default function Conversation(props) {
 
     const getConversation = async () => {
         try {
-            const response = await fetch("http://142.188.81.183:3000/chat/" + props.api + "/conversations/" + props.id);
+            const response = await fetch("https://loganz2.win/aichat/chat/" + props.api + "/conversations/" + props.id);
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);

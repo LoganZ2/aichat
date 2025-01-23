@@ -21,7 +21,7 @@ function App() {
   ];
   const fetchConversations = async () => {
     try {
-      const response = await fetch("http://142.188.81.183:3000/chat/" + currentAPI + "/conversations");
+      const response = await fetch("https://loganz2.win/aichat/chat/" + currentAPI + "/conversations");
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -77,7 +77,7 @@ function App() {
         key: 'newChat'
       }));
     } else {
-      await fetch("http://142.188.81.183:3000/chat/" + currentAPI + "/conversations/" + currentConversation, {
+      await fetch("https://loganz2.win/aichat/chat/" + currentAPI + "/conversations/" + currentConversation, {
         method: 'DELETE',
       });
     }
