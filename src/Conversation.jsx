@@ -10,6 +10,11 @@ export default function Conversation(props) {
     const [currentModel, setCurrentModel] = useState();
 
     useEffect(() => {
+        if (!props.id) {
+            setButtonDisabled(true);
+        } else {
+            setButtonDisabled(false);
+        }
         const fetchMessages = async () => {
             if (props.id) {
                 if (props.id === 'newChat') {
@@ -31,7 +36,8 @@ export default function Conversation(props) {
             { value: 'o1-preview', label: 'o1-preview' },
         ],
         'deepseek': [
-            { value: 'deepseek-chat', label: 'deepseek-chat' }
+            { value: 'deepseek-chat', label: 'deepseek-chat' },
+            { value: 'deepseek-reasoner', label: 'deepseek-reasoner' }
         ]
     }
 
